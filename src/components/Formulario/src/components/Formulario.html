@@ -1,0 +1,131 @@
+
+<section class="src-componentes-formulario">
+    <div class="jumbotron">
+
+      <h1>Alta de Gastos</h1>
+      <hr>
+      <br>
+
+      <vue-form :state="formState" @submit.prevent="enviar()">
+        
+
+        <!-- campo nombre -->
+        <validate tag="div">
+          <label for="nombre">Nombre</label>
+          <input 
+            type="text" 
+            id="nombre" 
+            name="nombre" 
+            class="form-control"
+            autocomplete="off"
+            v-model.trim="formData.nombre"
+            required
+            :minlength="nombreLengthMin"
+            :maxlength="nombreLengthMax"
+            no-espacios
+          >
+          <!-- mensajes de validación -->
+          <field-messages name="nombre" show="$dirty">
+            <div slot="required" class="alert alert-danger mt-1">Campo requerido</div>            
+            <div slot="no-espacios" class="alert alert-danger mt-1">
+              No se permiten espacios intermedios en este campo
+            </div>            
+            <div slot="minlength" class="alert alert-danger mt-1">
+              Este campo requiere como mínimo {{ nombreLengthMin }} caracteres
+            </div>            
+            <div v-if="formData.nombre.length == nombreLengthMax" class="alert alert-warning mt-1">
+              Este campo debe tener como máximo {{ nombreLengthMax }} caracteres
+            </div>            
+          </field-messages>
+
+        </validate>
+        <br>
+
+        <!-- campo descripcion -->
+        <validate tag="div">
+          <label for="descripcion">Descripcion</label>
+          <input 
+            type="text" 
+            id="descripcion" 
+            name="descripcion" 
+            class="form-control"
+            autocomplete="off"
+            v-model.trim="formData.descripcion"
+            required
+          >
+          <!-- mensajes de validación -->
+          <field-messages name="descripcion" show="$dirty">
+            <div slot="required" class="alert alert-danger mt-1">Campo requerido</div>            
+          </field-messages>
+
+        </validate>
+        <br>
+
+        <!-- campo importe -->
+        <validate tag="div">
+          <label for="importe">Importe</label>
+          <input 
+            type="number" 
+            id="importe" 
+            name="importe" 
+            class="form-control"
+            autocomplete="off"
+            v-model.number="formData.importe"
+            required
+            :min="importeMin"
+          >
+          <field-messages name="importe" show="$dirty">
+            <div slot="required" class="alert alert-danger mt-1">Campo requerido</div>            
+            <div slot="min" class="alert alert-danger mt-1">El importe mínimo es de $ {{importeMin}} .-</div>                        
+          </field-messages>
+
+        </validate>
+        <br>
+
+        <br>
+
+        <button class="btn btn-success my-3" :disabled="formState.$invalid" type="submit">Enviar</button>
+
+      </vue-form>
+    </div>
+
+    
+        <div class="jumbotron">
+            <ul>
+            
+                <table class="table">
+                    <tr class="bg-success text-white">
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th>Importe</th>
+                        <th>Registro</th>
+                        
+                    </tr>
+                    <tr class="bg-info text-white" v-for="(gasto,index) in gastos">                        
+                            <td>{{ gasto.nombre }}</td>
+                            <td>{{ gasto.descripcion }}</td>
+                            <td>${{ gasto.importe }}.-</td>
+                            <td>{{ gasto.dia }}/{{ gasto.mes }}/{{ gasto.anio }} - {{ gasto.horas }}:{{ gasto.minutos }}:{{ gasto.segundos }}</td>                        
+                    </tr>
+                    
+                   
+                    <tr class="table table-hover table-dark">
+                        <thead>
+                          <tr>
+                            <th scope="col">Gasto total</th>
+                            <th scope="col" v-bind:style="getEstilos()">${{gastoTotal}}.-</th>
+                          </tr>
+                        </thead>
+                    </tr>
+
+
+                </table>
+
+
+
+            </ul>
+            <hr>
+        </div>
+    </div>
+  </div>
+</section>
